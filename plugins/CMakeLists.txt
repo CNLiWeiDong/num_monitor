@@ -1,0 +1,1 @@
+add_subdirectory(monitor_price_plugin)
