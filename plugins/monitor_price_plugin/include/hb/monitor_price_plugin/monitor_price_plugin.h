@@ -3,19 +3,21 @@
 //
 #pragma once
 
+#include <hb/log_plugin/log_plugin.h>
+#include <hb/monitor_price_plugin/monitor_price_plugin_impl.h>
+#include <hb/send_mail_plugin/send_mail_plugin.h>
+
+#include <appbase/application.hpp>
 #include <functional>
 #include <string>
-#include <appbase/application.hpp>
-#include <hb/log_plugin/log_plugin.h>
-#include <hb/send_mail_plugin/send_mail_plugin.h>
-#include <hb/monitor_price_plugin/monitor_price_plugin_impl.h>
 
 using namespace std;
 
-namespace hb{ namespace plugin {
-    using namespace appbase;
-    class monitor_price_plugin : public appbase::plugin<monitor_price_plugin> {
-        public:
+namespace hb {
+    namespace plugin {
+        using namespace appbase;
+        class monitor_price_plugin : public appbase::plugin<monitor_price_plugin> {
+          public:
             APPBASE_PLUGIN_REQUIRES((log_plugin)(send_mail_plugin))
             monitor_price_plugin();
             virtual ~monitor_price_plugin();
@@ -23,7 +25,9 @@ namespace hb{ namespace plugin {
             void plugin_initialize(const variables_map&);
             void plugin_startup();
             void plugin_shutdown();
-        private:
+
+          private:
             shared_ptr<monitor_price_plugin_impl> my;
-    };
-}}
+        };
+    }  // namespace plugin
+}  // namespace hb
