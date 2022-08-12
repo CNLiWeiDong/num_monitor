@@ -30,9 +30,11 @@ namespace hb {
             uint32_t intervals_seconds_ = {20};
             uint32_t delay_update_seconds_ = {5};
             uint32_t max_request_error_time_ = {5};
-            uint64_t sendmsg_seconds_ = {2 * 60 * 60};
-            shared_ptr<boost::asio::deadline_timer> deadline_query_;
+            uint64_t sendmsg_seconds_ = {60 * 60};
+            uint64_t send_target_info_seconds_ = {60 * 60};
             shared_ptr<boost::asio::deadline_timer> deadline_updater_;
+            shared_ptr<boost::asio::deadline_timer> deadline_after_query_;
+            shared_ptr<boost::asio::deadline_timer> deadline_after_deal_;
 
           public:
             void add_target(const string &id, const target_type &target) {
@@ -45,6 +47,7 @@ namespace hb {
                 singles_->sendmsg_seconds(t);
                 pairs_->sendmsg_seconds(t);
             }
+            void send_target_info_seconds(const int &t) { send_target_info_seconds_ = t; }
             void senderror_seconds(const int &t) { targets_->senderror_seconds(t); }
             void intervals_seconds(int t) { intervals_seconds_ = t; }
             void delay_update_seconds(int t) {
@@ -66,6 +69,7 @@ namespace hb {
             ~monitor_price_plugin_impl();
             void start();
             void deal_monitor();
+            void deal_target_info();
             void loop();
         };
     }  // namespace plugin

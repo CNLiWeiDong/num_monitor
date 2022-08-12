@@ -1,10 +1,10 @@
 //
 // Created by 李卫东 on 2019-02-19.
 //
+#include <hb/dingtalk_plugin/dingtalk_plugin.h>
 #include <hb/http/http.h>
 #include <hb/https/https.h>
 #include <hb/monitor_price_plugin/monitor_pairs.h>
-#include <hb/send_mail_plugin/send_mail_plugin.h>
 #include <hb/time/time.h>
 #include <math.h>
 
@@ -61,13 +61,11 @@ namespace hb {
                         it.send_msg_time = cur_seconds;
                         log_info("【pair %s~%s】send msg value is %f", target1.id, target2.id, val);
                         // snd msg
-                        auto &mail_plugin = app().get_plugin<send_mail_plugin>();
+                        auto &dingtalk = app().get_plugin<dingtalk_plugin>();
                         std::ostringstream subject;
                         subject << "[pair " << target1.id << "~" << target2.id << "]" << val
                                 << contents1.str() << contents2.str();
-                        mail_plugin.send_mail(
-                            it.mail, subject.str(),
-                            subject.str() + "\n\rPlease pay attention to the pair !!!");
+                        dingtalk.send(subject.str() + "\n\rPlease pay attention to the pair !!!");
                     }
                 }
             }

@@ -20,7 +20,7 @@ namespace hb {
         void monitor_price_plugin::set_program_options(options_description& cli,
                                                        options_description& cfg) {
             cfg.add_options()("monitor-intervals-seconds",
-                              boost::program_options::value<int>()->default_value(20),
+                              boost::program_options::value<int>()->default_value(60),
                               "the intervals seconds of update all targets info.")(
                 "monitor-delay-update-seconds",
                 boost::program_options::value<int>()->default_value(5),
@@ -28,6 +28,9 @@ namespace hb {
                 "monitor-sendmsg-intervals",
                 boost::program_options::value<int>()->default_value(5 * 60),
                 "the intervals seconds of send message.")(
+                "monitor-send-target-info-intervals",
+                boost::program_options::value<int>()->default_value(1 * 60 * 60),
+                "the intervals seconds of send target info msg.")(
                 "monitor-senderror-intervals",
                 boost::program_options::value<int>()->default_value(1 * 60 * 60),
                 "the intervals seconds of send error msg.")(
@@ -44,6 +47,8 @@ namespace hb {
             log_info("monitor_price_plugin::plugin_initialize");
             my = make_shared<monitor_price_plugin_impl>();
             my->intervals_seconds(options.at("monitor-intervals-seconds").as<int>());
+            my->send_target_info_seconds(
+                options.at("monitor-send-target-info-intervals").as<int>());
             my->sendmsg_seconds(options.at("monitor-sendmsg-intervals").as<int>());
             my->senderror_seconds(options.at("monitor-senderror-intervals").as<int>());
             my->delay_update_seconds(options.at("monitor-delay-update-seconds").as<int>());
@@ -66,7 +71,9 @@ namespace hb {
                 auto target = config_pt.get_child_optional("target" + to_string(i));
                 if (!target) break;
                 target_type one_target
-                    = {.id = target->get<string>("id"),
+                    = {
+                       .id = target->get<string>("id"),
+                       .name = target->get<string>("name"),
                        .server_type = target->get<string>("server_type"),
                        .host = target->get<string>("host"),
                        .port = target->get<string>("port"),

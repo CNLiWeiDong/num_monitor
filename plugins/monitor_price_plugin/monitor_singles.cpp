@@ -1,10 +1,10 @@
 //
 // Created by 李卫东 on 2019-02-19.
 //
+#include <hb/dingtalk_plugin/dingtalk_plugin.h>
 #include <hb/http/http.h>
 #include <hb/https/https.h>
 #include <hb/monitor_price_plugin/monitor_singles.h>
-#include <hb/send_mail_plugin/send_mail_plugin.h>
 #include <math.h>
 
 #include <boost/algorithm/string.hpp>
@@ -43,13 +43,11 @@ namespace hb {
                         it.send_msg_time = cur_seconds;
                         log_info("【single %s】send msg single value is %f %s", target.id,
                                  target.value, contents_streame.str());
-                        auto &mail_plugin = app().get_plugin<send_mail_plugin>();
+                        auto &dingtalk = app().get_plugin<dingtalk_plugin>();
                         std::ostringstream subject;
                         subject << "[single " << target.id << "]" << target.value
                                 << contents_streame.str();
-                        mail_plugin.send_mail(
-                            it.mail, subject.str(),
-                            subject.str() + "\n\rPlease pay attention to the single !!!");
+                        dingtalk.send(subject.str() + "\n\rPlease pay attention to the single !!!");
                     }
                 }
             }

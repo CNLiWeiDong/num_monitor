@@ -3,9 +3,9 @@
 //
 #pragma once
 
+#include <hb/dingtalk_plugin/dingtalk_plugin.h>
 #include <hb/log/log.h>
 #include <hb/monitor_price_plugin/monitor_price_error.h>
-#include <hb/send_mail_plugin/send_mail_plugin.h>
 #include <hb/time/time.h>
 
 #include <appbase/application.hpp>
@@ -36,6 +36,7 @@ namespace hb {
         };
         struct target_type {
             string id;
+            string name;
             string server_type;
             string host;
             string port;
@@ -63,8 +64,10 @@ namespace hb {
             uint32_t max_request_error_time_ = {5};
             uint64_t senderror_seconds_ = {2 * 60 * 60};
             string request_error_mail_to_;
+            uint64_t last_notice_time_ = 0;
 
           public:
+            uint64_t last_notice_time() { return last_notice_time_; }
             void delay_update_seconds(const int &t) { delay_update_seconds_ = t; }
             void max_request_error_time(const int &t) { max_request_error_time_ = t; }
             void senderror_seconds(int t) { senderror_seconds_ = t; }
@@ -83,6 +86,7 @@ namespace hb {
 
           public:
             void deal_query();
+            void notice_target_info();
             void set_target(target_type &item, const int &status, const std::string &res);
             void add_request_error_times(target_type &item);
         };

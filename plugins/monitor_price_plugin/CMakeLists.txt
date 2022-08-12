@@ -21,5 +21,5 @@ target_link_libraries( monitor_price_plugin
         appbase
         hb
         log_plugin
-        send_mail_plugin
+        dingtalk_plugin
         )
