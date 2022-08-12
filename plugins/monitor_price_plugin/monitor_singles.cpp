@@ -36,9 +36,9 @@ namespace hb {
                 }
                 
                 if (item.min < target.value && target.value < item.max) {
-                    log_info("【single %s】normal %。2f", target.id, target.value);
+                    log_info("【single %s】normal %.2f", target.id, target.value);
                 } else {
-                    log_info("【single %s】attent %。2f", target.id, target.value);
+                    log_info("【single %s】attent %.2f", target.id, target.value);
                     notice_ids.push_back(item.id);
                 }
             }
@@ -50,7 +50,7 @@ namespace hb {
                 auto it2 = all_targets_list.find(b);
                 return it1->second.name < it2->second.name;
             });
-            string notice_text = "## 指标数值超范提示\n\n<font color=\"#FF0000\">==========请留意==========</font>\n";
+            string notice_text = "## 指标数值超范提示\n\n<font color=\"#FF0000\">====================</font>\n";
             for (auto &id : notice_ids) {
                 auto it1 = all_targets_list.find(id);
                 if (it1 == all_targets_list.end()) continue;
@@ -58,7 +58,7 @@ namespace hb {
                 if (it2 == singles_list_.end()) continue;
                 auto &target = it1->second;
                 auto &single = it2->second;
-                boost::format target_fmt("### %s(%s)\n- 溢价: **<font color=\"%s\">%.2f%%</font>**\n- 设定范围: %.2f~%.2f\n\n");
+                boost::format target_fmt("### %s(%s)\n- 溢价: **<font color=\"%s\">%.2f%%</font>**\n- 设定范围: <font color=\"#0000FF\">%.2f~%.2f</font>\n\n");
                 target_fmt 
                     % target.name 
                     % target.id 
@@ -68,6 +68,7 @@ namespace hb {
                     % single.max;
                 notice_text += target_fmt.str();
             }
+            notice_text += "<font color=\"#FF0000\">====================</font>\n";
             auto &dingtalk = app().get_plugin<dingtalk_plugin>();
             dingtalk.send(notice_text);
             send_singles_msg_time_ = hb::time::timestamp();
