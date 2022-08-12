@@ -23,10 +23,10 @@ namespace hb {
                               boost::program_options::value<int>()->default_value(60),
                               "the intervals seconds of update all targets info.")(
                 "monitor-delay-update-seconds",
-                boost::program_options::value<int>()->default_value(5),
+                boost::program_options::value<int>()->default_value(5), // http request 超时时间
                 "the delay update seconds after query all targets info.")(
                 "monitor-sendmsg-intervals",
-                boost::program_options::value<int>()->default_value(5 * 60),
+                boost::program_options::value<int>()->default_value(10 * 60),
                 "the intervals seconds of send message.")(
                 "monitor-send-target-info-intervals",
                 boost::program_options::value<int>()->default_value(1 * 60 * 60),

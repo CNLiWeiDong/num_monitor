@@ -16,7 +16,8 @@
 
 namespace hb {
     namespace plugin {
-
+        const char* green_color = "#3DDC84";
+        const char* red_color = "#FF0000";
         monitor_price_plugin_impl::~monitor_price_plugin_impl() {}
 
         void monitor_price_plugin_impl::deal_monitor() {

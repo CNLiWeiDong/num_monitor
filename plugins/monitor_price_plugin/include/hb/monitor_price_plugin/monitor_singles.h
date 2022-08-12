@@ -30,11 +30,21 @@ namespace hb {
         };
 
         class monitor_singles : public std::enable_shared_from_this<monitor_singles> {
-            vector<singles_type> singles_list_;
-            uint64_t sendmsg_seconds_ = {2 * 60 * 60};
+            std::map<string, singles_type> singles_list_;
+            uint64_t sendmsg_seconds_ = {10 * 60};
+            uint64_t send_singles_msg_time_ = 0;
 
           public:
-            void add_single(const singles_type &single) { singles_list_.push_back(single); }
+            void add_single(const singles_type &single) { 
+                auto iter = singles_list_.find(single.id);
+                if (iter != singles_list_.end()) {
+                    hb::plugin::monitor_price_exception e;
+                    e.msg("%s single already existed!", single.id);
+                    hb_throw(e);
+                }
+                singles_list_.insert(
+                    decltype(singles_list_)::value_type(single.id, std::move(single)));
+            }
             void sendmsg_seconds(int t) { sendmsg_seconds_ = t; }
 
           public:

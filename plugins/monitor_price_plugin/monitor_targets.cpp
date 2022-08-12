@@ -15,8 +15,8 @@
 
 namespace hb {
     namespace plugin {
-        const char* green_color = "#3DDC84";
-        const char* red_color = "#FF0000";
+        extern const char* green_color;
+        extern const char* red_color;
         bool regex_value(boost::regex &reg, boost::smatch &what, const std::string &res) {
             if (boost::regex_search(res.begin(), res.end(), what, reg)) {
                 if (what.size() < 2) {
@@ -42,9 +42,13 @@ namespace hb {
                     item.last_send_error_time = cur_seconds;
                     log_info("【target request error】%s %d ", item.id, item.request_error_times);
                     auto &dingtalk = app().get_plugin<dingtalk_plugin>();
-                    std::ostringstream subject;
-                    subject << "[target request error]" << item.id;
-                    dingtalk.send(subject.str() + "\n\rPlease pay attention to the target !!!");
+                    string notice_text = "## 指标更新异常\n";
+                    boost::format target_fmt("### %s(%s)\n指标多次请求错误, 需要请开发人员排队问题.\n\n");
+                    target_fmt 
+                        % item.name 
+                        % item.id ;
+                    notice_text += target_fmt.str();
+                    dingtalk.send(notice_text);
                 }
             }
         }
@@ -170,6 +174,11 @@ namespace hb {
             if (notice_ids.size() == 0) {
                 return;
             }
+            std::sort(notice_ids.begin(), notice_ids.end(),[this](const string &a, const string &b){
+                auto it1 = all_targets_list_.find(a);
+                auto it2 = all_targets_list_.find(b);
+                return it1->second.name < it2->second.name;
+            });
             string notice_text = "## 指标基本信息提示\n";
             for (auto &id : notice_ids) {
                 auto it = all_targets_list_.find(id);

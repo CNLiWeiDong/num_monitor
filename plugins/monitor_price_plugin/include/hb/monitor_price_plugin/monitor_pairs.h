@@ -33,7 +33,7 @@ namespace hb {
 
         class monitor_pairs : public std::enable_shared_from_this<monitor_pairs> {
             vector<pairs_type> pairs_list_;
-            uint64_t sendmsg_seconds_ = {2 * 60 * 60};
+            uint64_t sendmsg_seconds_ = {10 * 60};
 
           public:
             void add_pairs(const pairs_type &p) { pairs_list_.push_back(p); }
