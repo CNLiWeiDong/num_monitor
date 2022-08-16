@@ -6,7 +6,7 @@
 
 #include "appbase/application.hpp"
 #include "hb/log_plugin/log_plugin.h"
-#include "hb/monitor_price_plugin/monitor_price_plugin.h"
+#include "hb/qdii_monitor_plugin/qdii_monitor_plugin.h"
 
 using namespace appbase;
 using namespace hb::plugin;
@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
     app().set_default_config_dir(exePath / "config");
     app().set_default_data_dir(exePath / "data");
     // app().
-    if (!app().initialize<monitor_price_plugin>(argc, argv)) return 1;
+    if (!app().initialize<qdii_monitor_plugin>(argc, argv)) return 1;
     printf("app version %s\n", app().version_string().c_str());
     printf("app config directory is %s\n", app().config_dir().c_str());
     printf("app using config file %s\n", app().full_config_file_path().string().c_str());

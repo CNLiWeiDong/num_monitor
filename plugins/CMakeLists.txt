@@ -1,1 +1,1 @@
-add_subdirectory(monitor_price_plugin)
+add_subdirectory(qdii_monitor_plugin)
