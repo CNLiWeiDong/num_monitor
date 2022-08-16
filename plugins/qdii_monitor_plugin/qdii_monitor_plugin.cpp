@@ -29,7 +29,12 @@ namespace hb {
                 boost::program_options::value<int>()->default_value(10 * 60),
                 "the intervals seconds of send message.")(
                 "qdii-send-target-info-intervals",
-                boost::program_options::value<int>()->default_value(1 * 60 * 60),
+                /*
+                    1小时20分一次 9:30,10:50,12:10,13:30,14:50
+                    1小时40分一次 9:30,11:10,12:50,14:30
+                    1小时45分一次 9:30,11:15,13:00,14:45(选择)
+                */
+                boost::program_options::value<int>()->default_value((1*60+45)*60),
                 "the intervals seconds of send target info msg.")(
                 "qdii-senderror-intervals",
                 boost::program_options::value<int>()->default_value(1 * 60 * 60),
