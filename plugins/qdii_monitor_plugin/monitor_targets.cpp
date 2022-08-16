@@ -218,6 +218,7 @@ namespace hb::plugin {
                 % item.date;
             notice_text += target_fmt.str();
         }
+        notice_text += "[数据来源haoetf.com](https://www.haoetf.com/)";
         auto &dingtalk = app().get_plugin<dingtalk_plugin>();
         dingtalk.send(notice_text);
         last_notice_time_ = hb::time::timestamp();
