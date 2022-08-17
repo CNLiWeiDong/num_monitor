@@ -26,7 +26,7 @@ namespace hb {
                 boost::program_options::value<int>()->default_value(30), // http request 超时时间
                 "the delay update seconds after query all targets info.")(
                 "qdii-sendmsg-intervals",
-                boost::program_options::value<int>()->default_value(10 * 60),
+                boost::program_options::value<int>()->default_value(20 * 60),
                 "the intervals seconds of send message.")(
                 "qdii-send-target-info-intervals",
                 /*
