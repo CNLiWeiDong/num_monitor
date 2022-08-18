@@ -42,7 +42,7 @@ namespace hb::plugin {
                 log_info("【target request error】%s %d ", item.id, item.request_error_times);
                 auto &dingtalk = app().get_plugin<dingtalk_plugin>();
                 string notice_text = "## 指标更新异常\n";
-                boost::format target_fmt("### %s(%s)\n指标多次请求错误, 需要请开发人员排队问题.\n\n");
+                boost::format target_fmt("### %s(%s)\n指标多次请求错误, 请开发人员排除问题.\n\n");
                 target_fmt 
                     % item.name 
                     % item.id ;
